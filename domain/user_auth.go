@@ -5,11 +5,6 @@ import (
 	"unicode"
 )
 
-type User struct {
-	Login    string `db:"login"`
-	Password string `db:"password"`
-}
-
 type UserAuthorizeRequest struct {
 	Login    string `json:"login" validate:"required"`
 	Password string `json:"password" validate:"required"`
@@ -18,6 +13,12 @@ type UserAuthorizeRequest struct {
 type UserRegisterRequest struct {
 	Login    string `json:"login" validate:"required,min=4,max=50"`
 	Password string `json:"password" validate:"required,isDifficultPassword"`
+}
+
+type UserRegisterResponse struct {
+	ID       string `json:"id"`
+	Login    string `json:"login"`
+	Password string `json:"password"`
 }
 
 func isDifficultPassword(fldLvl validator.FieldLevel) bool {
@@ -58,4 +59,15 @@ func IsValid[T UserRegisterRequest | UserAuthorizeRequest](t T) error {
 		return err
 	}
 	return nil
+}
+
+type UserGetByLogin struct {
+	Login    string `db:"login"`
+	Password string `db:"password"`
+}
+
+type UserDB struct {
+	ID       string `db:"id"`
+	Login    string `db:"login"`
+	Password string `db:"password"`
 }

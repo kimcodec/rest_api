@@ -1,6 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS USERS(
+    id SERIAL PRIMARY KEY,
     login VARCHAR(256) UNIQUE NOT NULL,
     password varchar(256) NOT NULL
 );
