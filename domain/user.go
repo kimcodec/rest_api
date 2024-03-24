@@ -15,9 +15,11 @@ type UserAuthorizeRequest struct {
 	Password string `json:"password" validate:"required"`
 }
 
+// TODO: fix validation
+
 type UserRegisterRequest struct {
-	Login    string `json:"login" validate:"required, min=4, max=50"`
-	Password string `json:"password" validate:"required,isDifficultPassword"`
+	Login    string `json:"login" validate:"required"`
+	Password string `json:"password" validate:"required"`
 }
 
 func isDifficultPassword(fldLvl validator.FieldLevel) bool {

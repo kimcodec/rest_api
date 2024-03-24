@@ -6,7 +6,7 @@ import (
 )
 
 type UserRepository interface {
-	Authorize(context.Context, domain.UserAuthorizeRequest) error
+	Register(context.Context, domain.UserRegisterRequest) error
 	GetUserByLogin(context.Context, string) (domain.User, error)
 }
 
@@ -24,6 +24,6 @@ func (uc *UserService) GetUserByLogin(ctx context.Context, login string) (domain
 	return uc.ur.GetUserByLogin(ctx, login)
 }
 
-func (uc *UserService) Authorize(ctx context.Context, req domain.UserAuthorizeRequest) error {
-	return uc.ur.Authorize(ctx, req)
+func (uc *UserService) Register(ctx context.Context, req domain.UserRegisterRequest) error {
+	return uc.ur.Register(ctx, req)
 }
