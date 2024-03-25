@@ -24,6 +24,7 @@ type AdvertListResponse struct {
 }
 
 type AdvertToPost struct {
+	UserID   uint64
 	Title    string
 	Text     string
 	ImageURL string

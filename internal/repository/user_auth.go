@@ -24,16 +24,20 @@ func (ur *UserAuthRepository) Register(ctx context.Context, req domain.UserRegis
 		return domain.UserDB{}, err
 	}
 	defer conn.Close()
-	if _, err := conn.ExecContext(ctx,
-		"INSERT INTO Users(login, password) VALUES($1, $2)",
-		req.Login, req.Password); err != nil {
+
+	row := conn.QueryRowxContext(
+		ctx,
+		"INSERT INTO Users(login, password) VALUES($1, $2) RETURNING *",
+		req.Login, req.Password)
+	if row.Err() != nil {
 		return domain.UserDB{}, err
 	}
-	var user []domain.UserDB
-	if err := conn.SelectContext(ctx, &user, "SELECT * FROM Users WHERE login = $1", req.Login); err != nil {
+
+	var user domain.UserDB
+	if err := row.Scan(&user); err != nil {
 		return domain.UserDB{}, err
 	}
-	return user[0], nil
+	return user, nil
 }
 
 func (ur *UserAuthRepository) GetUserByLogin(ctx context.Context, login string) (domain.UserGetByLogin, error) {
@@ -43,7 +47,9 @@ func (ur *UserAuthRepository) GetUserByLogin(ctx context.Context, login string) 
 		return domain.UserGetByLogin{}, err
 	}
 	defer conn.Close()
-	if err := conn.SelectContext(ctx, &user,
+	if err := conn.SelectContext(
+		ctx,
+		&user,
 		"SELECT login, password FROM USERS WHERE login = $1",
 		login); err != nil {
 		return domain.UserGetByLogin{}, err

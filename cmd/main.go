@@ -25,21 +25,14 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.CORS())
 
-	/*a := e.Group("/advert")
-	{
-		config := echojwt.Config{
-			NewClaimsFunc: func(c echo.Context) jwt.Claims {
-				return new(domain.JWTCustomClaims)
-			},
-			SigningKey: []byte(domain.JWTKey),
-		}
-		a.Use(echojwt.WithConfig(config))
-	}*/
-
 	ur := repository.NewUserAuthRepository(db)
 	us := service.NewUserService(ur)
 	jas := service.NewJWTAuthService()
 	controllers.NewUserController(e, us, jas)
+
+	ar := repository.NewAdvertRepository(db)
+	as := service.NewAdvertService(ar)
+	controllers.NewAdvertController(e, as)
 
 	if err := e.Start(":8080"); err != nil {
 		log.Println("Failed to start server")

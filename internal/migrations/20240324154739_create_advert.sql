@@ -17,5 +17,5 @@ CREATE TABLE Adverts(
 
 -- +goose Down
 -- +goose StatementBegin
-SELECT 'down SQL query';
+DROP TABLE IF EXISTS Adverts;
 -- +goose StatementEnd
