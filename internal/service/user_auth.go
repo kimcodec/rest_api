@@ -7,7 +7,7 @@ import (
 
 type UserAuthRepository interface {
 	Register(context.Context, domain.UserRegisterRequest) (domain.UserDB, error)
-	GetUserByLogin(context.Context, string) (domain.UserGetByLogin, error)
+	GetUserByLogin(context.Context, string) (domain.UserDB, error)
 }
 
 type UserAuthService struct {
@@ -20,8 +20,17 @@ func NewUserService(ur UserAuthRepository) *UserAuthService {
 	}
 }
 
-func (uc *UserAuthService) GetUserByLogin(ctx context.Context, login string) (domain.UserGetByLogin, error) {
-	return uc.ur.GetUserByLogin(ctx, login)
+func (uc *UserAuthService) GetUserByLogin(ctx context.Context, login string) (domain.User, error) {
+	usr, err := uc.ur.GetUserByLogin(ctx, login)
+	if err != nil {
+		return domain.User{}, err
+	}
+	user := domain.User{
+		ID:       usr.ID,
+		Login:    usr.Login,
+		Password: usr.Password,
+	}
+	return user, nil
 }
 
 func (uc *UserAuthService) Register(ctx context.Context, req domain.UserRegisterRequest) (domain.UserRegisterResponse, error) {

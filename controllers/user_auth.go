@@ -7,10 +7,11 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"rest_api/domain"
+	"rest_api/lib/custom_validator"
 )
 
 type UserAuthService interface {
-	GetUserByLogin(context.Context, string) (domain.UserGetByLogin, error)
+	GetUserByLogin(context.Context, string) (domain.User, error)
 	Register(context.Context, domain.UserRegisterRequest) (domain.UserRegisterResponse, error)
 }
 
@@ -39,7 +40,7 @@ func (uc *UserController) Register(c echo.Context) error {
 			"error": fmt.Sprintf("Failed to parse JSON: %s", err.Error()),
 		})
 	}
-	if err := domain.IsValid[domain.UserRegisterRequest](userReg); err != nil {
+	if err := custom_validator.IsValid[domain.UserRegisterRequest](userReg); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
 			"error": fmt.Sprintf("Failed to validate fields: %s", err.Error()),
 		})
@@ -70,7 +71,7 @@ func (uc *UserController) Authorize(c echo.Context) error {
 			"error": fmt.Sprintf("Failed to parse JSON: %s", err.Error()),
 		})
 	}
-	if err := domain.IsValid[domain.UserAuthorizeRequest](req); err != nil {
+	if err := custom_validator.IsValid[domain.UserAuthorizeRequest](req); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
 			"error": fmt.Sprintf("Failed to validate fields: %s", err.Error()),
 		})
@@ -86,7 +87,7 @@ func (uc *UserController) Authorize(c echo.Context) error {
 			"error": "Invalid password or email",
 		})
 	}
-	t, err := uc.jas.CreateToken(12)
+	t, err := uc.jas.CreateToken(user.ID)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{
 			"error": fmt.Sprintf("failed to create token: %s", err.Error()),

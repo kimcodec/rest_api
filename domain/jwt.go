@@ -3,7 +3,7 @@ package domain
 import "github.com/golang-jwt/jwt/v5"
 
 type JWTCustomClaims struct {
-	ID uint64 `json:"name"`
+	UserID uint64 `json:"user_id"`
 	jwt.RegisteredClaims
 }
 

@@ -29,33 +29,33 @@ func (ur *UserAuthRepository) Register(ctx context.Context, req domain.UserRegis
 		ctx,
 		"INSERT INTO Users(login, password) VALUES($1, $2) RETURNING *",
 		req.Login, req.Password)
-	if row.Err() != nil {
+	if err := row.Err(); err != nil {
 		return domain.UserDB{}, err
 	}
 
 	var user domain.UserDB
-	if err := row.Scan(&user); err != nil {
+	if err := row.StructScan(&user); err != nil {
 		return domain.UserDB{}, err
 	}
 	return user, nil
 }
 
-func (ur *UserAuthRepository) GetUserByLogin(ctx context.Context, login string) (domain.UserGetByLogin, error) {
-	var user []domain.UserGetByLogin
+func (ur *UserAuthRepository) GetUserByLogin(ctx context.Context, login string) (domain.UserDB, error) {
+	var user []domain.UserDB
 	conn, err := ur.db.Connx(ctx)
 	if err != nil {
-		return domain.UserGetByLogin{}, err
+		return domain.UserDB{}, err
 	}
 	defer conn.Close()
 	if err := conn.SelectContext(
 		ctx,
 		&user,
-		"SELECT login, password FROM USERS WHERE login = $1",
+		"SELECT * FROM USERS WHERE login = $1",
 		login); err != nil {
-		return domain.UserGetByLogin{}, err
+		return domain.UserDB{}, err
 	}
 	if len(user) == 0 {
-		return domain.UserGetByLogin{}, errors.New("empty query result")
+		return domain.UserDB{}, errors.New("empty query result")
 	}
 	return user[0], nil
 }
