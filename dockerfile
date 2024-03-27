@@ -11,10 +11,10 @@ COPY controllers controllers
 COPY domain domain
 COPY lib lib
 COPY internal internal
-COPY docs docs
 COPY .env .env
+COPY Makefile Makefile
 
-RUN CGO_ENABLED=$CGO_ENABLED GOOS=$GOOS go build -o /val cmd/main.go
+RUN make install-swag; bin/swag init -g cmd/main.go; CGO_ENABLED=$CGO_ENABLED GOOS=$GOOS go build -o /val cmd/main.go
 
 EXPOSE 8080
 
