@@ -3,9 +3,11 @@ package controllers
 import (
 	"context"
 	"fmt"
+	"net/http"
+
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
-	"net/http"
+
 	"rest_api/domain"
 	"rest_api/lib/custom_validator"
 )

@@ -1,9 +1,11 @@
 package service
 
 import (
-	"github.com/golang-jwt/jwt/v5"
-	"rest_api/domain"
 	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+	
+	"rest_api/domain"
 )
 
 type JWTAuthService struct {

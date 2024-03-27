@@ -1,9 +1,11 @@
 package custom_validator
 
 import (
-	"github.com/go-playground/validator/v10"
-	"rest_api/domain"
 	"unicode"
+
+	"github.com/go-playground/validator/v10"
+
+	"rest_api/domain"
 )
 
 func newCustomValidator() *validator.Validate {

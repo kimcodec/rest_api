@@ -4,8 +4,9 @@ import (
 	"errors"
 	"math"
 	"net/url"
-	"rest_api/domain"
 	"strconv"
+
+	"rest_api/domain"
 )
 
 type AdvertQueryParams struct {
