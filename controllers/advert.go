@@ -43,6 +43,16 @@ func NewAdvertController(e *echo.Echo, as AdvertService) {
 	a.GET("", ac.List)
 }
 
+// @Security		ApiKeyAuth
+// @summary		Add advertisement
+// @tags			advert
+// @Description	Добавление объявления
+// @ID				advert-create
+// @Accept			json
+// @Produce		json
+// @Param			advert	body		domain.AdvertPostRequest	true	"Данные об объявлении"
+// @Success		200		{object}	domain.AdvertPostResponse
+// @Router			/advert [post]
 func (ac *AdvertController) Post(c echo.Context) error {
 	user, ok := c.Get("user").(*jwt.Token)
 	if !ok {
@@ -95,6 +105,20 @@ func (ac *AdvertController) Post(c echo.Context) error {
 	return c.JSON(http.StatusOK, adResp)
 }
 
+// @Security		ApiKeyAuth
+// @summary		List of advertisements
+// @tags			advert
+// @Description	Получение списка объявлений
+// @ID				advert-list
+// @Accept			json
+// @Produce		json
+// @Param			offset		query	integer	false	"Номер стартового объявление (начиная с 1)"
+// @Param			limit		query	integer	false	"Количество объявлений, которые нужно получить"
+// @Param			data_sort	query	string	integer	"Сортировка объявлений по ранним датам(late_date), свежим датам(frest_date), по ценам по возрастанию (less_price) и по убыванию(bigger_price)"
+// @Param			min_price	query	uint64	integer	"Минимальная цена в объявлении"
+// @Param			max_price	query	uint64	integer	"Максимальная цена в объявлении"
+// @Success		200			{array}	domain.AdvertListResponse
+// @Router			/advert [get]
 func (ac *AdvertController) List(c echo.Context) error {
 	user, ok := c.Get("user").(*jwt.Token)
 	if !ok {

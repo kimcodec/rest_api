@@ -35,6 +35,15 @@ func NewUserController(e *echo.Echo, us UserAuthService, jas JWTAuthService) {
 	e.POST("/register", uc.Register)
 }
 
+// @summary		Register
+// @tags			user_auth
+// @Description	Регистрация пользователя
+// @ID				register
+// @Accept			json
+// @Produce		json
+// @Param			req	body		domain.UserRegisterRequest	true	"Данные пользователя"
+// @Success		200	{object}	domain.UserRegisterResponse
+// @Router			/register [post]
 func (uc *UserController) Register(c echo.Context) error {
 	var userReg domain.UserRegisterRequest
 	if err := c.Bind(&userReg); err != nil {
@@ -66,6 +75,14 @@ func (uc *UserController) Register(c echo.Context) error {
 	return c.JSON(http.StatusCreated, user)
 }
 
+// @summary		Authorize
+// @tags			user_auth
+// @Description	Авторизация пользователя
+// @ID				authorize
+// @Accept			json
+// @Produce		json
+// @Param			req	body	domain.UserAuthorizeRequest	true	"Данные пользователя"
+// @Router			/authorize [post]
 func (uc *UserController) Authorize(c echo.Context) error {
 	var req domain.UserAuthorizeRequest
 	if err := c.Bind(&req); err != nil {

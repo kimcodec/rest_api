@@ -11,6 +11,7 @@ COPY controllers controllers
 COPY domain domain
 COPY lib lib
 COPY internal internal
+COPY docs docs
 COPY .env .env
 
 RUN CGO_ENABLED=$CGO_ENABLED GOOS=$GOOS go build -o /val cmd/main.go

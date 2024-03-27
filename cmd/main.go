@@ -5,12 +5,13 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	_ "github.com/lib/pq"
+	echoSwagger "github.com/swaggo/echo-swagger"
 
 	"log"
 	"os"
 
 	"rest_api/controllers"
+	_ "rest_api/docs"
 	"rest_api/internal/repository"
 	"rest_api/internal/service"
 )
@@ -26,6 +27,14 @@ func init() {
 		log.Fatal("Error loading .env file")
 	}
 }
+
+//	@title		Rest API
+//	@version	1
+
+//	@securityDefinitions.apikey	ApiKeyAuth
+//	@in							header
+//	@name						Authorization
+//	@description				Bearer + JWT
 
 func main() {
 	dbURI := os.Getenv("DATABASE_URI")
@@ -59,6 +68,9 @@ func main() {
 		address = defaultAddress
 		log.Println("Failed to get application address, used default value")
 	}
+
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
+
 	if err := e.Start(address); err != nil {
 		log.Println("Failed to start server")
 		return
