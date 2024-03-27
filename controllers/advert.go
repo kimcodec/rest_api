@@ -114,7 +114,7 @@ func (ac *AdvertController) Post(c echo.Context) error {
 // @Produce		json
 // @Param			offset		query	integer	false	"Номер стартового объявление (начиная с 1)"
 // @Param			limit		query	integer	false	"Количество объявлений, которые нужно получить"
-// @Param			data_sort	query	string	integer	"Сортировка объявлений по ранним датам(late_date), свежим датам(frest_date), по ценам по возрастанию (less_price) и по убыванию(bigger_price)"
+// @Param			data_sort	query	string	integer	"Сортировка объявлений по ранним датам(late_date), свежим датам(fresh_date), по ценам по возрастанию (less_price) и по убыванию(bigger_price)"
 // @Param			min_price	query	uint64	integer	"Минимальная цена в объявлении"
 // @Param			max_price	query	uint64	integer	"Максимальная цена в объявлении"
 // @Success		200			{array}	domain.AdvertListResponse

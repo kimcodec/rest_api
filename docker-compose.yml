@@ -16,16 +16,16 @@ services:
       - db:/var/lib/postgresql/data
     networks:
       - rest_api_net
-  #rest_api:
-  #  build:
-  #    context: .
-  #    dockerfile: dockerfile
-  #  ports:
-  #    - "8080:8080"
-  #  depends_on:
-  #    - db
-  #  networks:
-  #    - rest_api_net
+  rest_api:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - rest_api_net
 volumes:
   db:
 networks:
