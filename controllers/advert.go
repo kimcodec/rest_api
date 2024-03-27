@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"rest_api/domain"
 	"rest_api/lib"
+	"rest_api/lib/custom_validator"
 	"strconv"
 )
 
@@ -60,12 +61,23 @@ func (ac *AdvertController) Post(c echo.Context) error {
 	if err := c.Bind(&ad); err != nil {
 		return c.JSON(http.StatusUnprocessableEntity, fmt.Sprintf("Failed to parse JSON: %s", err.Error()))
 	}
+
+	if err := custom_validator.IsValid[domain.AdvertPostRequest](ad); err != nil {
+		return c.JSON(http.StatusUnprocessableEntity, echo.Map{
+			"error": fmt.Sprintf("Failed to falidate fields: %s", err.Error()),
+		})
+	}
+
+	if err := lib.ValidatePicture(ad.ImageURL); err != nil {
+		return c.JSON(http.StatusUnprocessableEntity, echo.Map{
+			"error": fmt.Sprintf("failed to validate picture by url: %s", err.Error()),
+		})
+	}
+
 	price, err := strconv.Atoi(ad.Price)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, fmt.Sprintf("Failed to parse price: %s", err.Error()))
 	}
-	// TODO: валидация
-	// TODO: добавить проверку формата и размера картинки
 	advert := domain.AdvertToPost{
 		UserID:   userID,
 		Title:    ad.Title,

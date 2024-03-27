@@ -52,9 +52,9 @@ func (ar *AdvertRepository) List(ctx context.Context, params lib.AdvertQueryPara
 		"ORDER BY %s LIMIT $4", func() string {
 		switch params.DataSort {
 		case domain.FreshDateSort:
-			return "created_at"
-		case domain.LateDateSort:
 			return "created_at DESC"
+		case domain.LateDateSort:
+			return "created_at"
 		case domain.BiggerPriceSort:
 			return "price DESC"
 		case domain.LessPriceSort:

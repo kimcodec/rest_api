@@ -5,10 +5,10 @@ import (
 )
 
 type AdvertPostRequest struct {
-	Title    string `json:"title"`
-	Text     string `json:"text"`
-	ImageURL string `json:"image_url"`
-	Price    string `json:"price"`
+	Title    string `json:"title" validate:"required,min=4,max=50"`
+	Text     string `json:"text" validate:"required,min=4,max=500"`
+	ImageURL string `json:"image_url" validate:"required,url"`
+	Price    string `json:"price" validate:"required,number"`
 }
 
 type AdvertPostResponse struct {
@@ -37,15 +37,6 @@ type AdvertListResponse struct {
 	ImageURL        string `json:"image_url"`
 	Price           uint64 `json:"price"`
 	PublishedByUser bool   `json:"published_by_user"`
-}
-
-type AdvertService struct {
-	AuthorLogin string
-	UserID      uint64
-	Title       string
-	Text        string
-	ImageURL    string
-	Price       uint64
 }
 
 type AdvertToPost struct {
